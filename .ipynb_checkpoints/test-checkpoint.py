@@ -1,9 +1,3 @@
-"""
-Can use this file to create a piece of pipe. Important variables:
--opt.how_many = number of files you want to put through the model.
-dataset = somehow need to get into the deep and make it so you can insert just one file or few into the dataset. (make sure its not meant for just large amounts of data (inefficiency))
-opt.no_flip = unsure
-web_dir/web_page = these are essential for sving images until i see a bteter way"""
 import os
 from options.test_options import TestOptions
 from data.data_loader import CreateDataLoader
@@ -16,7 +10,6 @@ opt.nThreads = 1   # test code only supports nThreads = 1
 opt.batchSize = 1  # test code only supports batchSize = 1
 opt.serial_batches = True  # no shuffle
 opt.no_flip = True  # no flip
-opt.continue_train = False
 
 data_loader = CreateDataLoader(opt)
 dataset = data_loader.load_data()
@@ -29,12 +22,11 @@ webpage = html.HTML(web_dir, 'Experiment = %s, Phase = %s, Epoch = %s' % (opt.na
 for i, data in enumerate(dataset):
     if i >= opt.how_many:
         break
-    model.set_input(data)    
+    model.set_input(data)
     model.test()
-    
-    visuals = model.get_current_visuals()    
+    visuals = model.get_current_visuals()
     img_path = model.get_image_paths()
     print('%04d: process image... %s' % (i, img_path))
-    visualizer.save_images(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio)  #this is useful for saving images (I think it is) 
+    visualizer.save_images(webpage, visuals, img_path, aspect_ratio=opt.aspect_ratio)
 
-##webpage.save()
+webpage.save()
